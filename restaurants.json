@@ -1,0 +1,802 @@
+{
+  "1": {
+    "restaurantId": 1,
+    "cuisine": 3,
+    "costBracket": 5,
+    "rating": 2.35,
+    "isRecommended": false,
+    "onBoardedTime": "2022-02-24T23:58:29"
+  },
+  "2": {
+    "restaurantId": 2,
+    "cuisine": 3,
+    "costBracket": 5,
+    "rating": 2.93,
+    "isRecommended": false,
+    "onBoardedTime": "2022-08-14T05:28:05"
+  },
+  "3": {
+    "restaurantId": 3,
+    "cuisine": 2,
+    "costBracket": 5,
+    "rating": 1.55,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-22T19:04:57"
+  },
+  "4": {
+    "restaurantId": 4,
+    "cuisine": 2,
+    "costBracket": 1,
+    "rating": 3.5,
+    "isRecommended": false,
+    "onBoardedTime": "2022-04-20T05:18:15"
+  },
+  "5": {
+    "restaurantId": 5,
+    "cuisine": 2,
+    "costBracket": 1,
+    "rating": 4.68,
+    "isRecommended": false,
+    "onBoardedTime": "2022-02-10T17:29:16"
+  },
+  "6": {
+    "restaurantId": 6,
+    "cuisine": 1,
+    "costBracket": 1,
+    "rating": 1.9,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-06T04:59:44"
+  },
+  "7": {
+    "restaurantId": 7,
+    "cuisine": 2,
+    "costBracket": 2,
+    "rating": 2.79,
+    "isRecommended": false,
+    "onBoardedTime": "2022-06-21T19:42:08"
+  },
+  "8": {
+    "restaurantId": 8,
+    "cuisine": 2,
+    "costBracket": 2,
+    "rating": 3.25,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-08T05:51:52"
+  },
+  "9": {
+    "restaurantId": 9,
+    "cuisine": 2,
+    "costBracket": 5,
+    "rating": 1.16,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-20T17:27:51"
+  },
+  "10": {
+    "restaurantId": 10,
+    "cuisine": 2,
+    "costBracket": 5,
+    "rating": 4.0,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-31T08:14:20"
+  },
+  "11": {
+    "restaurantId": 11,
+    "cuisine": 3,
+    "costBracket": 3,
+    "rating": 5.0,
+    "isRecommended": true,
+    "onBoardedTime": "2022-08-03T04:06:25"
+  },
+  "12": {
+    "restaurantId": 12,
+    "cuisine": 1,
+    "costBracket": 3,
+    "rating": 2.9,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-05T11:04:58"
+  },
+  "13": {
+    "restaurantId": 13,
+    "cuisine": 1,
+    "costBracket": 5,
+    "rating": 2.91,
+    "isRecommended": false,
+    "onBoardedTime": "2022-10-29T10:47:25"
+  },
+  "14": {
+    "restaurantId": 14,
+    "cuisine": 2,
+    "costBracket": 2,
+    "rating": 4.02,
+    "isRecommended": true,
+    "onBoardedTime": "2023-01-31T12:39:46"
+  },
+  "15": {
+    "restaurantId": 15,
+    "cuisine": 3,
+    "costBracket": 3,
+    "rating": 1.65,
+    "isRecommended": false,
+    "onBoardedTime": "2022-09-05T07:24:40"
+  },
+  "16": {
+    "restaurantId": 16,
+    "cuisine": 1,
+    "costBracket": 4,
+    "rating": 1.6,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-25T15:27:28"
+  },
+  "17": {
+    "restaurantId": 17,
+    "cuisine": 2,
+    "costBracket": 3,
+    "rating": 4.99,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-12T22:27:01"
+  },
+  "18": {
+    "restaurantId": 18,
+    "cuisine": 3,
+    "costBracket": 2,
+    "rating": 3.54,
+    "isRecommended": false,
+    "onBoardedTime": "2022-10-16T22:51:43"
+  },
+  "19": {
+    "restaurantId": 19,
+    "cuisine": 3,
+    "costBracket": 1,
+    "rating": 2.13,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-28T21:53:21"
+  },
+  "20": {
+    "restaurantId": 20,
+    "cuisine": 1,
+    "costBracket": 3,
+    "rating": 2.65,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-17T17:59:53"
+  },
+  "21": {
+    "restaurantId": 21,
+    "cuisine": 3,
+    "costBracket": 5,
+    "rating": 2.95,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-12T18:52:23"
+  },
+  "22": {
+    "restaurantId": 22,
+    "cuisine": 1,
+    "costBracket": 2,
+    "rating": 2.84,
+    "isRecommended": false,
+    "onBoardedTime": "2022-02-15T07:59:40"
+  },
+  "23": {
+    "restaurantId": 23,
+    "cuisine": 3,
+    "costBracket": 2,
+    "rating": 2.84,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-23T18:21:43"
+  },
+  "24": {
+    "restaurantId": 24,
+    "cuisine": 3,
+    "costBracket": 5,
+    "rating": 4.82,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-29T11:05:02"
+  },
+  "25": {
+    "restaurantId": 25,
+    "cuisine": 2,
+    "costBracket": 2,
+    "rating": 1.61,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-23T19:37:54"
+  },
+  "26": {
+    "restaurantId": 26,
+    "cuisine": 3,
+    "costBracket": 3,
+    "rating": 1.78,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-13T21:51:07"
+  },
+  "27": {
+    "restaurantId": 27,
+    "cuisine": 3,
+    "costBracket": 5,
+    "rating": 1.88,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-31T14:54:37"
+  },
+  "28": {
+    "restaurantId": 28,
+    "cuisine": 2,
+    "costBracket": 4,
+    "rating": 3.52,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-10T18:30:21"
+  },
+  "29": {
+    "restaurantId": 29,
+    "cuisine": 3,
+    "costBracket": 3,
+    "rating": 4.16,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-22T11:31:31"
+  },
+  "30": {
+    "restaurantId": 30,
+    "cuisine": 3,
+    "costBracket": 3,
+    "rating": 3.13,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-06T16:50:41"
+  },
+  "31": {
+    "restaurantId": 31,
+    "cuisine": 1,
+    "costBracket": 2,
+    "rating": 1.75,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-27T09:49:44"
+  },
+  "32": {
+    "restaurantId": 32,
+    "cuisine": 1,
+    "costBracket": 2,
+    "rating": 3.67,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-27T02:27:14"
+  },
+  "33": {
+    "restaurantId": 33,
+    "cuisine": 3,
+    "costBracket": 3,
+    "rating": 4.19,
+    "isRecommended": true,
+    "onBoardedTime": "2023-01-12T17:57:43"
+  },
+  "34": {
+    "restaurantId": 34,
+    "cuisine": 3,
+    "costBracket": 5,
+    "rating": 2.71,
+    "isRecommended": false,
+    "onBoardedTime": "2022-12-18T14:05:34"
+  },
+  "35": {
+    "restaurantId": 35,
+    "cuisine": 3,
+    "costBracket": 2,
+    "rating": 1.72,
+    "isRecommended": false,
+    "onBoardedTime": "2022-03-23T09:26:54"
+  },
+  "36": {
+    "restaurantId": 36,
+    "cuisine": 3,
+    "costBracket": 4,
+    "rating": 3.38,
+    "isRecommended": false,
+    "onBoardedTime": "2022-07-15T19:37:54"
+  },
+  "37": {
+    "restaurantId": 37,
+    "cuisine": 3,
+    "costBracket": 2,
+    "rating": 4.41,
+    "isRecommended": true,
+    "onBoardedTime": "2022-01-24T13:25:11"
+  },
+  "38": {
+    "restaurantId": 38,
+    "cuisine": 2,
+    "costBracket": 2,
+    "rating": 3.33,
+    "isRecommended": false,
+    "onBoardedTime": "2022-08-29T06:20:47"
+  },
+  "39": {
+    "restaurantId": 39,
+    "cuisine": 3,
+    "costBracket": 2,
+    "rating": 2.03,
+    "isRecommended": false,
+    "onBoardedTime": "2022-08-22T05:51:34"
+  },
+  "40": {
+    "restaurantId": 40,
+    "cuisine": 3,
+    "costBracket": 1,
+    "rating": 2.4,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-20T01:24:22"
+  },
+  "41": {
+    "restaurantId": 41,
+    "cuisine": 1,
+    "costBracket": 4,
+    "rating": 1.04,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-23T12:32:03"
+  },
+  "42": {
+    "restaurantId": 42,
+    "cuisine": 2,
+    "costBracket": 4,
+    "rating": 3.83,
+    "isRecommended": false,
+    "onBoardedTime": "2022-03-10T06:30:10"
+  },
+  "43": {
+    "restaurantId": 43,
+    "cuisine": 2,
+    "costBracket": 4,
+    "rating": 4.59,
+    "isRecommended": false,
+    "onBoardedTime": "2022-10-31T16:52:49"
+  },
+  "44": {
+    "restaurantId": 44,
+    "cuisine": 2,
+    "costBracket": 2,
+    "rating": 2.61,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-14T06:56:12"
+  },
+  "45": {
+    "restaurantId": 45,
+    "cuisine": 3,
+    "costBracket": 5,
+    "rating": 2.68,
+    "isRecommended": false,
+    "onBoardedTime": "2022-11-15T01:17:39"
+  },
+  "46": {
+    "restaurantId": 46,
+    "cuisine": 3,
+    "costBracket": 3,
+    "rating": 4.05,
+    "isRecommended": false,
+    "onBoardedTime": "2022-06-28T13:32:25"
+  },
+  "47": {
+    "restaurantId": 47,
+    "cuisine": 3,
+    "costBracket": 2,
+    "rating": 2.54,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-10T05:15:35"
+  },
+  "48": {
+    "restaurantId": 48,
+    "cuisine": 2,
+    "costBracket": 1,
+    "rating": 1.65,
+    "isRecommended": false,
+    "onBoardedTime": "2022-05-18T12:44:56"
+  },
+  "49": {
+    "restaurantId": 49,
+    "cuisine": 2,
+    "costBracket": 1,
+    "rating": 2.97,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-10T10:54:19"
+  },
+  "50": {
+    "restaurantId": 50,
+    "cuisine": 1,
+    "costBracket": 1,
+    "rating": 2.14,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-02T13:17:10"
+  },
+  "51": {
+    "restaurantId": 51,
+    "cuisine": 2,
+    "costBracket": 2,
+    "rating": 3.57,
+    "isRecommended": false,
+    "onBoardedTime": "2022-11-27T18:13:58"
+  },
+  "52": {
+    "restaurantId": 52,
+    "cuisine": 2,
+    "costBracket": 1,
+    "rating": 1.62,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-21T09:27:11"
+  },
+  "53": {
+    "restaurantId": 53,
+    "cuisine": 3,
+    "costBracket": 1,
+    "rating": 3.94,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-25T19:01:48"
+  },
+  "54": {
+    "restaurantId": 54,
+    "cuisine": 3,
+    "costBracket": 2,
+    "rating": 1.11,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-21T04:46:23"
+  },
+  "55": {
+    "restaurantId": 55,
+    "cuisine": 2,
+    "costBracket": 1,
+    "rating": 1.13,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-18T16:13:11"
+  },
+  "56": {
+    "restaurantId": 56,
+    "cuisine": 3,
+    "costBracket": 1,
+    "rating": 1.81,
+    "isRecommended": false,
+    "onBoardedTime": "2022-07-11T02:09:59"
+  },
+  "57": {
+    "restaurantId": 57,
+    "cuisine": 3,
+    "costBracket": 2,
+    "rating": 3.11,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-26T02:55:40"
+  },
+  "58": {
+    "restaurantId": 58,
+    "cuisine": 3,
+    "costBracket": 4,
+    "rating": 3.96,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-20T01:23:01"
+  },
+  "59": {
+    "restaurantId": 59,
+    "cuisine": 3,
+    "costBracket": 1,
+    "rating": 3.87,
+    "isRecommended": false,
+    "onBoardedTime": "2022-06-04T14:26:23"
+  },
+  "60": {
+    "restaurantId": 60,
+    "cuisine": 1,
+    "costBracket": 4,
+    "rating": 2.98,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-09T09:29:19"
+  },
+  "61": {
+    "restaurantId": 61,
+    "cuisine": 3,
+    "costBracket": 5,
+    "rating": 4.95,
+    "isRecommended": false,
+    "onBoardedTime": "2022-03-05T04:12:22"
+  },
+  "62": {
+    "restaurantId": 62,
+    "cuisine": 2,
+    "costBracket": 2,
+    "rating": 4.17,
+    "isRecommended": false,
+    "onBoardedTime": "2022-08-29T03:56:55"
+  },
+  "63": {
+    "restaurantId": 63,
+    "cuisine": 2,
+    "costBracket": 1,
+    "rating": 3.42,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-07T13:07:07"
+  },
+  "64": {
+    "restaurantId": 64,
+    "cuisine": 2,
+    "costBracket": 3,
+    "rating": 3.35,
+    "isRecommended": false,
+    "onBoardedTime": "2022-02-21T14:55:51"
+  },
+  "65": {
+    "restaurantId": 65,
+    "cuisine": 3,
+    "costBracket": 5,
+    "rating": 2.1,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-29T05:50:52"
+  },
+  "66": {
+    "restaurantId": 66,
+    "cuisine": 1,
+    "costBracket": 4,
+    "rating": 3.24,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-28T21:05:27"
+  },
+  "67": {
+    "restaurantId": 67,
+    "cuisine": 1,
+    "costBracket": 5,
+    "rating": 2.16,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-27T15:27:51"
+  },
+  "68": {
+    "restaurantId": 68,
+    "cuisine": 3,
+    "costBracket": 2,
+    "rating": 3.19,
+    "isRecommended": false,
+    "onBoardedTime": "2022-04-24T01:09:55"
+  },
+  "69": {
+    "restaurantId": 69,
+    "cuisine": 2,
+    "costBracket": 4,
+    "rating": 2.12,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-28T16:56:08"
+  },
+  "70": {
+    "restaurantId": 70,
+    "cuisine": 3,
+    "costBracket": 3,
+    "rating": 2.47,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-19T15:55:54"
+  },
+  "71": {
+    "restaurantId": 71,
+    "cuisine": 2,
+    "costBracket": 3,
+    "rating": 4.23,
+    "isRecommended": false,
+    "onBoardedTime": "2022-10-25T15:09:16"
+  },
+  "72": {
+    "restaurantId": 72,
+    "cuisine": 2,
+    "costBracket": 5,
+    "rating": 4.13,
+    "isRecommended": true,
+    "onBoardedTime": "2023-01-23T18:37:20"
+  },
+  "73": {
+    "restaurantId": 73,
+    "cuisine": 2,
+    "costBracket": 1,
+    "rating": 3.57,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-19T14:46:09"
+  },
+  "74": {
+    "restaurantId": 74,
+    "cuisine": 3,
+    "costBracket": 4,
+    "rating": 2.7,
+    "isRecommended": false,
+    "onBoardedTime": "2022-09-29T15:07:12"
+  },
+  "75": {
+    "restaurantId": 75,
+    "cuisine": 1,
+    "costBracket": 1,
+    "rating": 4.4,
+    "isRecommended": true,
+    "onBoardedTime": "2023-01-17T10:46:07"
+  },
+  "76": {
+    "restaurantId": 76,
+    "cuisine": 2,
+    "costBracket": 1,
+    "rating": 2.19,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-16T05:36:45"
+  },
+  "77": {
+    "restaurantId": 77,
+    "cuisine": 2,
+    "costBracket": 5,
+    "rating": 3.68,
+    "isRecommended": false,
+    "onBoardedTime": "2022-04-26T02:32:44"
+  },
+  "78": {
+    "restaurantId": 78,
+    "cuisine": 1,
+    "costBracket": 3,
+    "rating": 1.35,
+    "isRecommended": false,
+    "onBoardedTime": "2022-02-19T01:37:41"
+  },
+  "79": {
+    "restaurantId": 79,
+    "cuisine": 1,
+    "costBracket": 2,
+    "rating": 2.01,
+    "isRecommended": false,
+    "onBoardedTime": "2022-10-25T07:17:20"
+  },
+  "80": {
+    "restaurantId": 80,
+    "cuisine": 2,
+    "costBracket": 5,
+    "rating": 4.55,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-22T11:08:08"
+  },
+  "81": {
+    "restaurantId": 81,
+    "cuisine": 2,
+    "costBracket": 5,
+    "rating": 4.07,
+    "isRecommended": true,
+    "onBoardedTime": "2023-02-03T09:25:21"
+  },
+  "82": {
+    "restaurantId": 82,
+    "cuisine": 1,
+    "costBracket": 3,
+    "rating": 2.46,
+    "isRecommended": false,
+    "onBoardedTime": "2022-03-13T18:49:43"
+  },
+  "83": {
+    "restaurantId": 83,
+    "cuisine": 1,
+    "costBracket": 4,
+    "rating": 4.44,
+    "isRecommended": true,
+    "onBoardedTime": "2022-01-06T09:02:33"
+  },
+  "84": {
+    "restaurantId": 84,
+    "cuisine": 3,
+    "costBracket": 3,
+    "rating": 5.0,
+    "isRecommended": true,
+    "onBoardedTime": "2022-06-16T14:10:49"
+  },
+  "85": {
+    "restaurantId": 85,
+    "cuisine": 3,
+    "costBracket": 3,
+    "rating": 1.18,
+    "isRecommended": false,
+    "onBoardedTime": "2022-08-17T16:56:50"
+  },
+  "86": {
+    "restaurantId": 86,
+    "cuisine": 3,
+    "costBracket": 2,
+    "rating": 2.89,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-16T11:04:34"
+  },
+  "87": {
+    "restaurantId": 87,
+    "cuisine": 3,
+    "costBracket": 1,
+    "rating": 1.28,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-04T08:17:13"
+  },
+  "88": {
+    "restaurantId": 88,
+    "cuisine": 3,
+    "costBracket": 5,
+    "rating": 2.43,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-30T07:08:49"
+  },
+  "89": {
+    "restaurantId": 89,
+    "cuisine": 1,
+    "costBracket": 2,
+    "rating": 2.1,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-09T08:04:13"
+  },
+  "90": {
+    "restaurantId": 90,
+    "cuisine": 2,
+    "costBracket": 3,
+    "rating": 2.59,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-06T19:39:55"
+  },
+  "91": {
+    "restaurantId": 91,
+    "cuisine": 3,
+    "costBracket": 3,
+    "rating": 3.82,
+    "isRecommended": false,
+    "onBoardedTime": "2022-08-15T11:55:24"
+  },
+  "92": {
+    "restaurantId": 92,
+    "cuisine": 3,
+    "costBracket": 4,
+    "rating": 4.45,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-31T07:12:44"
+  },
+  "93": {
+    "restaurantId": 93,
+    "cuisine": 3,
+    "costBracket": 1,
+    "rating": 2.7,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-15T15:15:47"
+  },
+  "94": {
+    "restaurantId": 94,
+    "cuisine": 1,
+    "costBracket": 1,
+    "rating": 4.49,
+    "isRecommended": false,
+    "onBoardedTime": "2022-05-28T04:21:02"
+  },
+  "95": {
+    "restaurantId": 95,
+    "cuisine": 2,
+    "costBracket": 4,
+    "rating": 3.47,
+    "isRecommended": false,
+    "onBoardedTime": "2023-01-26T06:09:51"
+  },
+  "96": {
+    "restaurantId": 96,
+    "cuisine": 1,
+    "costBracket": 5,
+    "rating": 4.13,
+    "isRecommended": true,
+    "onBoardedTime": "2023-02-16T11:35:45"
+  },
+  "97": {
+    "restaurantId": 97,
+    "cuisine": 1,
+    "costBracket": 1,
+    "rating": 3.34,
+    "isRecommended": false,
+    "onBoardedTime": "2022-04-21T02:19:03"
+  },
+  "98": {
+    "restaurantId": 98,
+    "cuisine": 1,
+    "costBracket": 4,
+    "rating": 1.39,
+    "isRecommended": false,
+    "onBoardedTime": "2022-04-13T15:25:55"
+  },
+  "99": {
+    "restaurantId": 99,
+    "cuisine": 2,
+    "costBracket": 2,
+    "rating": 1.46,
+    "isRecommended": false,
+    "onBoardedTime": "2022-11-05T19:10:02"
+  },
+  "100": {
+    "restaurantId": 100,
+    "cuisine": 2,
+    "costBracket": 3,
+    "rating": 3.03,
+    "isRecommended": false,
+    "onBoardedTime": "2023-02-18T08:24:35"
+  }
+}
