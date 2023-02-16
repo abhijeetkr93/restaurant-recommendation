@@ -1,15 +1,5 @@
 import json
 from datetime import datetime
-from enum import Enum
-
-
-class Cuisine(Enum):
-    SOUTH_INDIAN = 1
-    NORTH_INDIAN = 2
-    CHINESE = 3
-
-    def __repr__(self):
-        return f"Cuisine.{self.name}"
 
 
 class Restaurants:
@@ -35,10 +25,17 @@ class Restaurants:
                 self.new_restaurants.append(v)
         return self
 
-    def get_top_four_by_ratings(self):
-        return sorted(
-            self.new_restaurants, key=lambda x: x["rating"], reverse=True
-        )[0:3]
+    def get_top_four_by_ratings(self) -> list:
+        return sorted(self.new_restaurants, key=lambda x: x["rating"], reverse=True)[
+            0:3
+        ]
+
+
+all_restaurants = Restaurants()
+RESTAURANTS = all_restaurants()
+NEW_TOP_RATING_RESTAURANTS = (
+    all_restaurants.filter_new_restaurants().get_top_four_by_ratings()
+)
 
 
 class Orders:
@@ -49,19 +46,26 @@ class Orders:
     def __call__(self):
         return self.get_all_orders()
 
-    def get_all_orders(self):
+    def get_all_orders(self) -> dict:
         if not self.orders:
             with open("orders.json") as orders:
                 self.orders = json.load(orders)
         return self.orders
 
 
-all_restaurants = Restaurants()
-RESTAURANTS = all_restaurants()
-NEW_TOP_RATING_RESTAURANTS = (
-    all_restaurants.filter_new_restaurants().get_top_four_by_ratings()
-)
 ALL_ORDERS = Orders()()
+
+
+class UserRestaurantOrders:
+    def __init__(self, user_id) -> None:
+        self.user_id = user_id
+
+    def get_user_orders(self) -> list:
+        user_orders = []
+        for val in ALL_ORDERS.values():
+            if val["userId"] == self.user_id:
+                user_orders.append(val)
+        return user_orders
 
 
 class UserCuisines:
@@ -70,7 +74,7 @@ class UserCuisines:
         self.primary_cuisine = None
         self.secondary_cuisine = None
 
-    def calculate_user_cuisines(self):
+    def calculate_user_cuisines(self) -> None:
         if self.user_orders:
             cuisine_count = {}
             for v in self.user_orders:
@@ -82,12 +86,12 @@ class UserCuisines:
             self.primary_cuisine = cuisines[0:1]
             self.secondary_cuisine = cuisines[1:]
 
-    def primary_cuisines(self):
+    def primary_cuisines(self) -> list:
         if not self.primary_cuisine:
             self.calculate_user_cuisines()
         return self.primary_cuisine
 
-    def secondary_cuisines(self):
+    def secondary_cuisines(self) -> list:
         if not self.secondary_cuisine or not self.primary_cuisine:
             self.calculate_user_cuisines()
         return self.secondary_cuisine
@@ -99,7 +103,7 @@ class UserCostBracket:
         self.primary_cost_bracket = None
         self.secondary_cost_bracket = None
 
-    def calculate_user_cost_brackets(self):
+    def calculate_user_cost_brackets(self) -> None:
         if self.user_orders:
             bracket_count = {}
             for v in self.user_orders:
@@ -111,165 +115,252 @@ class UserCostBracket:
             self.primary_cost_bracket = cost_brackets[0:1]
             self.secondary_cost_bracket = cost_brackets[1:3]
 
-    def primary_cost_brackets(self):
+    def primary_cost_brackets(self) -> list:
         if not self.primary_cost_bracket:
             self.calculate_user_cost_brackets()
         return self.primary_cost_bracket
 
-    def secondary_cost_brackets(self):
+    def secondary_cost_brackets(self) -> list:
         if not self.secondary_cost_bracket or not self.primary_cost_bracket:
             self.calculate_user_cost_brackets()
         return self.secondary_cost_bracket
 
 
-class UserRestaurantOrders:
-    def __init__(self, user_id) -> None:
-        self.user_id = user_id
-
-    def get_user_orders(self):
-        user_orders = []
-        for _, val in ALL_ORDERS.items():
-            if val["userId"] == self.user_id:
-                user_orders.append(val)
-        return user_orders
-
-
 class UserRestaurantRecommendation:
+    LOGIC_TYPES = [
+        "get_featured_restaurants",
+        "get_high_ratings_restaurants",
+        "get_new_created_restaurants",
+        "get_low_rating_restaurants",
+        "get_all_restaurants",
+    ]
+
     def __init__(self, user_id) -> None:
         self.user_orders = UserRestaurantOrders(user_id).get_user_orders()
         self.user_cuisines = UserCuisines(self.user_orders)
         self.user_cost_brackets = UserCostBracket(self.user_orders)
-        self.recommendations = []
 
-    def add_restaurants_logic_1(self):
-        """ """
+    def get_restaurant_priorities_recommendations(self) -> list:
+        """
+        Get final recommendation ordered list of restaurants using set of multiple logics
 
-        prim_cuisines = self.user_cuisines.primary_cuisines()
-        secondary_cuisines = self.user_cuisines.secondary_cuisines()
-        primary_cost_brackets = self.user_cost_brackets.primary_cost_brackets()
-        secondary_cost_brackets = self.user_cost_brackets.secondary_cost_brackets()
+        :return: list of restaurants
+        """
 
+        user_details = {
+            "prim_cuisines": self.user_cuisines.primary_cuisines(),
+            "secondary_cuisines": self.user_cuisines.secondary_cuisines(),
+            "primary_cost_brackets": self.user_cost_brackets.primary_cost_brackets(),
+            "secondary_cost_brackets": self.user_cost_brackets.secondary_cost_brackets(),
+        }
+        recommendations_priorities = [
+            getattr(UserRestaurantRecommendation, f"{logic}")(self, **user_details)
+            for logic in self.LOGIC_TYPES
+        ]
+        return self.get_ordered_unique_recommendation(recommendations_priorities)
+
+    def get_featured_restaurants(self, **kwargs) -> list:
+        """
+        Get featured restaurants of primary cuisine and primary cost bracket.
+        If none, then all featured restaurants of primary cuisine, secondary cost
+        and secondary cuisine, primary cost
+
+        :param kwargs: user details viz. (primary/sec cuisines, costBrackets)
+        :return: list of restaurants
+        """
+
+        prim_cuisines = kwargs["prim_cuisines"]
+        secondary_cuisines = kwargs["secondary_cuisines"]
+        primary_cost_brackets = kwargs["primary_cost_brackets"]
+        secondary_cost_brackets = kwargs["secondary_cost_brackets"]
+        recommendations = []
         for restaurant_id, v in RESTAURANTS.items():
             if all(
                 [
                     (v["cuisine"] in prim_cuisines),
                     (v["costBracket"] in primary_cost_brackets),
                     (v["isRecommended"]),
-                    (restaurant_id not in self.recommendations),
+                    (int(restaurant_id) not in recommendations),
                 ]
             ):
-                self.recommendations.append(restaurant_id)
+                recommendations.append(int(restaurant_id))
 
-        if not self.recommendations:
+        if not recommendations:
+            recommendations = [[] for _ in range(2)]
             for restaurant_id, v in RESTAURANTS.items():
                 if all(
                     [
                         (v["cuisine"] in prim_cuisines),
                         (v["costBracket"] in secondary_cost_brackets),
                         (v["isRecommended"]),
-                        (restaurant_id not in self.recommendations),
+                        (int(restaurant_id) not in recommendations[0]),
                     ]
                 ):
-                    self.recommendations.append(restaurant_id)
+                    recommendations[0].append(int(restaurant_id))
 
                 if all(
                     [
                         (v["cuisine"] in secondary_cuisines),
                         (v["costBracket"] in primary_cost_brackets),
                         (v["isRecommended"]),
-                        (restaurant_id not in self.recommendations),
+                        (int(restaurant_id) not in recommendations[1]),
                     ]
                 ):
-                    self.recommendations.append(restaurant_id)
-        return self
+                    recommendations[1].append(int(restaurant_id))
+                return self.get_ordered_unique_recommendation(recommendations)
+        else:
+            return recommendations
 
-    def add_restaurants_logic_2(self):
-        """ """
+    def get_high_ratings_restaurants(self, **kwargs) -> list:
+        """
+        Get restaurant using following logics in order:
+            - All restaurants of Primary cuisine, primary cost bracket with rating >= 4
+            - All restaurants of Primary cuisine, secondary cost bracket with rating >= 4.5
+            - All restaurants of secondary cuisine, primary cost bracket with rating >= 4.5
 
-        prim_cuisines = self.user_cuisines.primary_cuisines()
-        secondary_cuisines = self.user_cuisines.secondary_cuisines()
-        primary_cost_brackets = self.user_cost_brackets.primary_cost_brackets()
-        secondary_cost_brackets = self.user_cost_brackets.secondary_cost_brackets()
+        :param kwargs: user details viz. (primary/sec cuisines, costBrackets)
+        :return: list of restaurants
+        """
+
+        prim_cuisines = kwargs["prim_cuisines"]
+        secondary_cuisines = kwargs["secondary_cuisines"]
+        primary_cost_brackets = kwargs["primary_cost_brackets"]
+        secondary_cost_brackets = kwargs["secondary_cost_brackets"]
+        logic_counts = 3
+        recommendations = [[] for _ in range(logic_counts)]
         for restaurant_id, v in RESTAURANTS.items():
             if all(
                 [
                     (v["cuisine"] in prim_cuisines),
                     (v["costBracket"] in primary_cost_brackets),
                     (v["rating"] >= 4),
-                    (restaurant_id not in self.recommendations),
+                    (int(restaurant_id) not in recommendations[0]),
                 ]
             ):
-                self.recommendations.append(restaurant_id)
+                recommendations[0].append(int(restaurant_id))
 
-        for restaurant_id, v in RESTAURANTS.items():
             if all(
                 [
                     (v["cuisine"] in prim_cuisines),
                     (v["costBracket"] in secondary_cost_brackets),
                     (v["rating"] >= 4.5),
-                    (restaurant_id not in self.recommendations),
+                    (int(restaurant_id) not in recommendations[1]),
                 ]
             ):
-                self.recommendations.append(restaurant_id)
+                recommendations[1].append(int(restaurant_id))
 
-        for restaurant_id, v in RESTAURANTS.items():
             if all(
                 [
                     (v["cuisine"] in secondary_cuisines),
                     (v["costBracket"] in primary_cost_brackets),
                     (v["rating"] >= 4.5),
-                    (restaurant_id not in self.recommendations),
+                    (int(restaurant_id) not in recommendations[2]),
                 ]
             ):
-                self.recommendations.append(restaurant_id)
-        
+                recommendations[2].append(int(restaurant_id))
+        return self.get_ordered_unique_recommendation(recommendations)
+
+    def get_new_created_restaurants(self, **kwargs) -> list:
+        """
+        Get Top 4 newly created restaurants by rating
+
+        :param kwargs: user details viz. (primary/sec cuisines, costBrackets)
+        :return: list of restaurants
+        """
+
+        recommendations = []
         for restaurant in NEW_TOP_RATING_RESTAURANTS:
-            if (restaurant['restaurantId'] not in self.recommendations):
-                self.recommendations.append(restaurant['restaurantId'])
-        
+            if restaurant["restaurantId"] not in recommendations:
+                recommendations.append(restaurant["restaurantId"])
+        return recommendations
+
+    def get_low_rating_restaurants(self, **kwargs) -> list:
+        """
+        Get restaurant using following logics in order:
+            All restaurants of Primary cuisine, primary cost bracket with rating < 4
+            All restaurants of Primary cuisine, secondary cost bracket with rating < 4.5
+            All restaurants of secondary cuisine, primary cost bracket with rating < 4.5
+
+        :param kwargs: user details viz. (primary/sec cuisines, costBrackets)
+        :return: list of restaurants
+        """
+
+        prim_cuisines = kwargs["prim_cuisines"]
+        secondary_cuisines = kwargs["secondary_cuisines"]
+        primary_cost_brackets = kwargs["primary_cost_brackets"]
+        secondary_cost_brackets = kwargs["secondary_cost_brackets"]
+        logic_counts = 3
+        recommendations = [[] for _ in range(logic_counts)]
         for restaurant_id, v in RESTAURANTS.items():
             if all(
                 [
                     (v["cuisine"] in prim_cuisines),
                     (v["costBracket"] in primary_cost_brackets),
                     (v["rating"] < 4.5),
-                    (restaurant_id not in self.recommendations),
+                    (int(restaurant_id) not in recommendations[0]),
                 ]
             ):
-                self.recommendations.append(restaurant_id)
-        
-        for restaurant_id, v in RESTAURANTS.items():
+                recommendations[0].append(int(restaurant_id))
+
             if all(
                 [
                     (v["cuisine"] in prim_cuisines),
                     (v["costBracket"] in secondary_cost_brackets),
                     (v["rating"] < 4.5),
-                    (restaurant_id not in self.recommendations),
+                    (int(restaurant_id) not in recommendations[1]),
                 ]
             ):
-                self.recommendations.append(restaurant_id)
-        
-        for restaurant_id, v in RESTAURANTS.items():
+                recommendations[1].append(int(restaurant_id))
+
             if all(
                 [
                     (v["cuisine"] in secondary_cuisines),
                     (v["costBracket"] in primary_cost_brackets),
                     (v["rating"] < 4.5),
-                    (restaurant_id not in self.recommendations),
+                    (int(restaurant_id) not in recommendations[2]),
                 ]
             ):
-                self.recommendations.append(restaurant_id)
-        
+                recommendations[2].append(int(restaurant_id))
+        return self.get_ordered_unique_recommendation(recommendations)
+
+    def get_all_restaurants(self, **kwargs) -> list:
+        """
+        Get All restaurants of any cuisine, any cost bracket
+
+        :param kwargs: user details viz. (primary/sec cuisines, costBrackets)
+        :return: list of all restaurants
+        """
+
+        recommendations = []
         for restaurant_id, v in RESTAURANTS.items():
-            if restaurant_id not in self.recommendations:
-                self.recommendations.append(restaurant_id)
-        
+            recommendations.append(int(restaurant_id))
+        return recommendations
+
+    @staticmethod
+    def get_ordered_unique_recommendation(recommendations: list) -> list:
+        """
+        Spread list of lists into single list maintaining order of values from them
+
+        :param recommendations: List of restaurants
+        :return: list
+        """
+
+        ordered_priorities = []
+        for rec in recommendations:
+            for rest in rec:
+                if rest not in ordered_priorities:
+                    ordered_priorities.append(rest)
+        return ordered_priorities
 
 
-def get_user_rest_recommendations(user_id):
+def get_user_rest_recommendations(user_id: str) -> list:
+    """
+
+    :param user_id: User Id
+    :return: list of restaurants
+    """
     user_recommendations = UserRestaurantRecommendation(user_id)
-    user_recommendations.add_restaurants_logic_1().add_restaurants_logic_2()
-    return user_recommendations.recommendations
+    return user_recommendations.get_restaurant_priorities_recommendations()
 
 
-print(get_user_rest_recommendations(1))
+print(get_user_rest_recommendations(4))
