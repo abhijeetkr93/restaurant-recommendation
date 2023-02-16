@@ -1,59 +1,4 @@
-import json
-from datetime import datetime
-
-
-class Restaurants:
-    def __init__(self) -> None:
-        self.restaurants = None
-        self.new_restaurants = []
-
-    def __call__(self):
-        return self.get_all_restaurants()
-
-    def get_all_restaurants(self):
-        if not self.restaurants:
-            with open("restaurants.json") as res:
-                self.restaurants = json.load(res)
-        return self.restaurants
-
-    def filter_new_restaurants(self):
-        current = datetime.now()
-        for _, v in self.restaurants.items():
-            onboard_datetime = datetime.fromisoformat(v["onBoardedTime"])
-            diff = (current - onboard_datetime).total_seconds()
-            if round(diff / 3600) < 48:
-                self.new_restaurants.append(v)
-        return self
-
-    def get_top_four_by_ratings(self) -> list:
-        return sorted(self.new_restaurants, key=lambda x: x["rating"], reverse=True)[
-            0:3
-        ]
-
-
-all_restaurants = Restaurants()
-RESTAURANTS = all_restaurants()
-NEW_TOP_RATING_RESTAURANTS = (
-    all_restaurants.filter_new_restaurants().get_top_four_by_ratings()
-)
-
-
-class Orders:
-    def __init__(self) -> None:
-        self.orders = []
-        self.get_all_orders()
-
-    def __call__(self):
-        return self.get_all_orders()
-
-    def get_all_orders(self) -> dict:
-        if not self.orders:
-            with open("orders.json") as orders:
-                self.orders = json.load(orders)
-        return self.orders
-
-
-ALL_ORDERS = Orders()()
+from mock_service import ALL_ORDERS, RESTAURANTS, NEW_TOP_RATING_RESTAURANTS
 
 
 class UserRestaurantOrders:
@@ -61,6 +6,11 @@ class UserRestaurantOrders:
         self.user_id = user_id
 
     def get_user_orders(self) -> list:
+        """
+        Get all the user's order from all orders
+        :return: user's order list
+        """
+
         user_orders = []
         for val in ALL_ORDERS.values():
             if val["userId"] == self.user_id:
@@ -75,6 +25,11 @@ class UserCuisines:
         self.secondary_cuisine = None
 
     def calculate_user_cuisines(self) -> None:
+        """
+        calculates the user primary and secondary cuisines based on
+        numbers of orders he placed
+        """
+
         if self.user_orders:
             cuisine_count = {}
             for v in self.user_orders:
@@ -87,11 +42,19 @@ class UserCuisines:
             self.secondary_cuisine = cuisines[1:]
 
     def primary_cuisines(self) -> list:
+        """
+        :return: user's primary cuisine
+        """
+
         if not self.primary_cuisine:
             self.calculate_user_cuisines()
         return self.primary_cuisine
 
     def secondary_cuisines(self) -> list:
+        """
+        :return: user's secondary cuisines
+        """
+
         if not self.secondary_cuisine or not self.primary_cuisine:
             self.calculate_user_cuisines()
         return self.secondary_cuisine
@@ -104,6 +67,11 @@ class UserCostBracket:
         self.secondary_cost_bracket = None
 
     def calculate_user_cost_brackets(self) -> None:
+        """
+        calculates the user primary and secondary costBracket based on
+        numbers of orders he placed
+        """
+
         if self.user_orders:
             bracket_count = {}
             for v in self.user_orders:
@@ -116,11 +84,19 @@ class UserCostBracket:
             self.secondary_cost_bracket = cost_brackets[1:3]
 
     def primary_cost_brackets(self) -> list:
+        """
+        :return: user's primary cost bracket
+        """
+
         if not self.primary_cost_bracket:
             self.calculate_user_cost_brackets()
         return self.primary_cost_bracket
 
     def secondary_cost_brackets(self) -> list:
+        """
+        :return: user's secondary cost bracket
+        """
+
         if not self.secondary_cost_bracket or not self.primary_cost_bracket:
             self.calculate_user_cost_brackets()
         return self.secondary_cost_bracket
@@ -140,9 +116,10 @@ class UserRestaurantRecommendation:
         self.user_cuisines = UserCuisines(self.user_orders)
         self.user_cost_brackets = UserCostBracket(self.user_orders)
 
-    def get_restaurant_priorities_recommendations(self) -> list:
+    def get_restaurants_recommendations(self) -> list:
         """
-        Get final recommendation ordered list of restaurants using set of multiple logics
+        Get final recommendation ordered list of restaurants using set of
+        multiple logics
 
         :return: list of restaurants
         """
@@ -339,10 +316,10 @@ class UserRestaurantRecommendation:
     @staticmethod
     def get_ordered_unique_recommendation(recommendations: list) -> list:
         """
-        Spread list of lists into single list maintaining order of values from them
+        Spread list of lists into single list maintaining order of values
 
         :param recommendations: List of restaurants
-        :return: list
+        :return: list of restaurants
         """
 
         ordered_priorities = []
@@ -353,14 +330,8 @@ class UserRestaurantRecommendation:
         return ordered_priorities
 
 
-def get_user_rest_recommendations(user_id: str) -> list:
-    """
-
-    :param user_id: User Id
-    :return: list of restaurants
-    """
-    user_recommendations = UserRestaurantRecommendation(user_id)
-    return user_recommendations.get_restaurant_priorities_recommendations()
-
-
-print(get_user_rest_recommendations(4))
+user_recommendations = UserRestaurantRecommendation(
+    user_id=1
+)  # taking sample user with user_id=1
+restaurants_recommendation = user_recommendations.get_restaurants_recommendations()
+print(restaurants_recommendation)

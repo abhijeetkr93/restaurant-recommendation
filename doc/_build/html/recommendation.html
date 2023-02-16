@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>recommendation module &mdash; Restaurants Recommendation 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="mock_service module" href="mock_service.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Restaurants Recommendation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">restaurant-recommendation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="mock.html">mock module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mock_service.html">mock_service module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">recommendation module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#recommendation.UserCostBracket"><code class="docutils literal notranslate"><span class="pre">UserCostBracket</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#recommendation.UserCostBracket.calculate_user_cost_brackets"><code class="docutils literal notranslate"><span class="pre">UserCostBracket.calculate_user_cost_brackets()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recommendation.UserCostBracket.primary_cost_brackets"><code class="docutils literal notranslate"><span class="pre">UserCostBracket.primary_cost_brackets()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recommendation.UserCostBracket.secondary_cost_brackets"><code class="docutils literal notranslate"><span class="pre">UserCostBracket.secondary_cost_brackets()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#recommendation.UserCuisines"><code class="docutils literal notranslate"><span class="pre">UserCuisines</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#recommendation.UserCuisines.calculate_user_cuisines"><code class="docutils literal notranslate"><span class="pre">UserCuisines.calculate_user_cuisines()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recommendation.UserCuisines.primary_cuisines"><code class="docutils literal notranslate"><span class="pre">UserCuisines.primary_cuisines()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recommendation.UserCuisines.secondary_cuisines"><code class="docutils literal notranslate"><span class="pre">UserCuisines.secondary_cuisines()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#recommendation.UserRestaurantOrders"><code class="docutils literal notranslate"><span class="pre">UserRestaurantOrders</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#recommendation.UserRestaurantOrders.get_user_orders"><code class="docutils literal notranslate"><span class="pre">UserRestaurantOrders.get_user_orders()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#recommendation.UserRestaurantRecommendation"><code class="docutils literal notranslate"><span class="pre">UserRestaurantRecommendation</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#recommendation.UserRestaurantRecommendation.LOGIC_TYPES"><code class="docutils literal notranslate"><span class="pre">UserRestaurantRecommendation.LOGIC_TYPES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recommendation.UserRestaurantRecommendation.get_all_restaurants"><code class="docutils literal notranslate"><span class="pre">UserRestaurantRecommendation.get_all_restaurants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recommendation.UserRestaurantRecommendation.get_featured_restaurants"><code class="docutils literal notranslate"><span class="pre">UserRestaurantRecommendation.get_featured_restaurants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recommendation.UserRestaurantRecommendation.get_high_ratings_restaurants"><code class="docutils literal notranslate"><span class="pre">UserRestaurantRecommendation.get_high_ratings_restaurants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recommendation.UserRestaurantRecommendation.get_low_rating_restaurants"><code class="docutils literal notranslate"><span class="pre">UserRestaurantRecommendation.get_low_rating_restaurants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recommendation.UserRestaurantRecommendation.get_new_created_restaurants"><code class="docutils literal notranslate"><span class="pre">UserRestaurantRecommendation.get_new_created_restaurants()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recommendation.UserRestaurantRecommendation.get_ordered_unique_recommendation"><code class="docutils literal notranslate"><span class="pre">UserRestaurantRecommendation.get_ordered_unique_recommendation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recommendation.UserRestaurantRecommendation.get_restaurants_recommendations"><code class="docutils literal notranslate"><span class="pre">UserRestaurantRecommendation.get_restaurants_recommendations()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Restaurants Recommendation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">restaurant-recommendation</a></li>
+      <li class="breadcrumb-item active">recommendation module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/recommendation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-recommendation">
+<span id="recommendation-module"></span><h1>recommendation module<a class="headerlink" href="#module-recommendation" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="recommendation.UserCostBracket">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">recommendation.</span></span><span class="sig-name descname"><span class="pre">UserCostBracket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_orders</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recommendation.html#UserCostBracket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommendation.UserCostBracket" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="recommendation.UserCostBracket.calculate_user_cost_brackets">
+<span class="sig-name descname"><span class="pre">calculate_user_cost_brackets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/recommendation.html#UserCostBracket.calculate_user_cost_brackets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommendation.UserCostBracket.calculate_user_cost_brackets" title="Permalink to this definition"></a></dt>
+<dd><p>calculates the user primary and secondary costBracket based on
+numbers of orders he placed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="recommendation.UserCostBracket.primary_cost_brackets">
+<span class="sig-name descname"><span class="pre">primary_cost_brackets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/recommendation.html#UserCostBracket.primary_cost_brackets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommendation.UserCostBracket.primary_cost_brackets" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>user’s primary cost bracket</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="recommendation.UserCostBracket.secondary_cost_brackets">
+<span class="sig-name descname"><span class="pre">secondary_cost_brackets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/recommendation.html#UserCostBracket.secondary_cost_brackets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommendation.UserCostBracket.secondary_cost_brackets" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>user’s secondary cost bracket</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="recommendation.UserCuisines">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">recommendation.</span></span><span class="sig-name descname"><span class="pre">UserCuisines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_orders</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recommendation.html#UserCuisines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommendation.UserCuisines" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="recommendation.UserCuisines.calculate_user_cuisines">
+<span class="sig-name descname"><span class="pre">calculate_user_cuisines</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/recommendation.html#UserCuisines.calculate_user_cuisines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommendation.UserCuisines.calculate_user_cuisines" title="Permalink to this definition"></a></dt>
+<dd><p>calculates the user primary and secondary cuisines based on
+numbers of orders he placed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="recommendation.UserCuisines.primary_cuisines">
+<span class="sig-name descname"><span class="pre">primary_cuisines</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/recommendation.html#UserCuisines.primary_cuisines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommendation.UserCuisines.primary_cuisines" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>user’s primary cuisine</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="recommendation.UserCuisines.secondary_cuisines">
+<span class="sig-name descname"><span class="pre">secondary_cuisines</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/recommendation.html#UserCuisines.secondary_cuisines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommendation.UserCuisines.secondary_cuisines" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>user’s secondary cuisines</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="recommendation.UserRestaurantOrders">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">recommendation.</span></span><span class="sig-name descname"><span class="pre">UserRestaurantOrders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recommendation.html#UserRestaurantOrders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommendation.UserRestaurantOrders" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="recommendation.UserRestaurantOrders.get_user_orders">
+<span class="sig-name descname"><span class="pre">get_user_orders</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/recommendation.html#UserRestaurantOrders.get_user_orders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommendation.UserRestaurantOrders.get_user_orders" title="Permalink to this definition"></a></dt>
+<dd><p>Get all the user’s order from all orders
+:return: user’s order list</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="recommendation.UserRestaurantRecommendation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">recommendation.</span></span><span class="sig-name descname"><span class="pre">UserRestaurantRecommendation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/recommendation.html#UserRestaurantRecommendation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommendation.UserRestaurantRecommendation" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="recommendation.UserRestaurantRecommendation.LOGIC_TYPES">
+<span class="sig-name descname"><span class="pre">LOGIC_TYPES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['get_featured_restaurants',</span> <span class="pre">'get_high_ratings_restaurants',</span> <span class="pre">'get_new_created_restaurants',</span> <span class="pre">'get_low_rating_restaurants',</span> <span class="pre">'get_all_restaurants']</span></em><a class="headerlink" href="#recommendation.UserRestaurantRecommendation.LOGIC_TYPES" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="recommendation.UserRestaurantRecommendation.get_all_restaurants">
+<span class="sig-name descname"><span class="pre">get_all_restaurants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/recommendation.html#UserRestaurantRecommendation.get_all_restaurants"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommendation.UserRestaurantRecommendation.get_all_restaurants" title="Permalink to this definition"></a></dt>
+<dd><p>Get All restaurants of any cuisine, any cost bracket</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – user details viz. (primary/sec cuisines, costBrackets)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of all restaurants</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="recommendation.UserRestaurantRecommendation.get_featured_restaurants">
+<span class="sig-name descname"><span class="pre">get_featured_restaurants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/recommendation.html#UserRestaurantRecommendation.get_featured_restaurants"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommendation.UserRestaurantRecommendation.get_featured_restaurants" title="Permalink to this definition"></a></dt>
+<dd><p>Get featured restaurants of primary cuisine and primary cost bracket.
+If none, then all featured restaurants of primary cuisine, secondary cost
+and secondary cuisine, primary cost</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – user details viz. (primary/sec cuisines, costBrackets)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of restaurants</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="recommendation.UserRestaurantRecommendation.get_high_ratings_restaurants">
+<span class="sig-name descname"><span class="pre">get_high_ratings_restaurants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/recommendation.html#UserRestaurantRecommendation.get_high_ratings_restaurants"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommendation.UserRestaurantRecommendation.get_high_ratings_restaurants" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Get restaurant using following logics in order:</dt><dd><ul class="simple">
+<li><p>All restaurants of Primary cuisine, primary cost bracket with rating &gt;= 4</p></li>
+<li><p>All restaurants of Primary cuisine, secondary cost bracket with rating &gt;= 4.5</p></li>
+<li><p>All restaurants of secondary cuisine, primary cost bracket with rating &gt;= 4.5</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – user details viz. (primary/sec cuisines, costBrackets)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of restaurants</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="recommendation.UserRestaurantRecommendation.get_low_rating_restaurants">
+<span class="sig-name descname"><span class="pre">get_low_rating_restaurants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/recommendation.html#UserRestaurantRecommendation.get_low_rating_restaurants"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommendation.UserRestaurantRecommendation.get_low_rating_restaurants" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Get restaurant using following logics in order:</dt><dd><p>All restaurants of Primary cuisine, primary cost bracket with rating &lt; 4
+All restaurants of Primary cuisine, secondary cost bracket with rating &lt; 4.5
+All restaurants of secondary cuisine, primary cost bracket with rating &lt; 4.5</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – user details viz. (primary/sec cuisines, costBrackets)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of restaurants</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="recommendation.UserRestaurantRecommendation.get_new_created_restaurants">
+<span class="sig-name descname"><span class="pre">get_new_created_restaurants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/recommendation.html#UserRestaurantRecommendation.get_new_created_restaurants"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommendation.UserRestaurantRecommendation.get_new_created_restaurants" title="Permalink to this definition"></a></dt>
+<dd><p>Get Top 4 newly created restaurants by rating</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – user details viz. (primary/sec cuisines, costBrackets)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of restaurants</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="recommendation.UserRestaurantRecommendation.get_ordered_unique_recommendation">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_ordered_unique_recommendation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recommendations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/recommendation.html#UserRestaurantRecommendation.get_ordered_unique_recommendation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommendation.UserRestaurantRecommendation.get_ordered_unique_recommendation" title="Permalink to this definition"></a></dt>
+<dd><p>Spread list of lists into single list maintaining order of values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>recommendations</strong> – List of restaurants</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of restaurants</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="recommendation.UserRestaurantRecommendation.get_restaurants_recommendations">
+<span class="sig-name descname"><span class="pre">get_restaurants_recommendations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/recommendation.html#UserRestaurantRecommendation.get_restaurants_recommendations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#recommendation.UserRestaurantRecommendation.get_restaurants_recommendations" title="Permalink to this definition"></a></dt>
+<dd><p>Get final recommendation ordered list of restaurants using set of
+multiple logics</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of restaurants</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mock_service.html" class="btn btn-neutral float-left" title="mock_service module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Abhijeet Kumar.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
