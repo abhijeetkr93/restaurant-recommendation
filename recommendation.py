@@ -162,17 +162,24 @@ class UserRestaurantRecommendation:
         "get_all_restaurants",
     ]
 
-    def __init__(self, user_id) -> None:
-        self.user = UsersOrderService(user_id=user_id).get_user_details()
+    def __init__(self) -> None:
+        self.user = None
+        self.available_restaurants = {}
 
-    def get_restaurants_recommendations(self) -> list:
+    def get_restaurant_recommendations(
+        self, user_instance: User, available_restaurants: dict
+    ) -> list:
         """
         Get final recommendation ordered list of restaurants using set of
         multiple logics
 
+        :param available_restaurants: list of available restaurants
+        :param user_instance: User instance
         :return: list of restaurants
         """
 
+        self.user = user_instance
+        self.available_restaurants = available_restaurants
         recommendations_priorities = [
             getattr(UserRestaurantRecommendation, f"{logic}")(self)
             for logic in self.LOGIC_TYPES
@@ -189,7 +196,7 @@ class UserRestaurantRecommendation:
         """
 
         recommendations = []
-        for restaurant_id, v in RESTAURANTS.items():
+        for restaurant_id, v in self.available_restaurants.items():
             if all(
                 [
                     (v["cuisine"] in self.user.primary_cuisines),
@@ -202,7 +209,7 @@ class UserRestaurantRecommendation:
 
         if not recommendations:
             recommendations = [[] for _ in range(2)]
-            for restaurant_id, v in RESTAURANTS.items():
+            for restaurant_id, v in self.available_restaurants.items():
                 if all(
                     [
                         (v["cuisine"] in self.user.primary_cuisines),
@@ -238,7 +245,7 @@ class UserRestaurantRecommendation:
 
         logic_counts = 3
         recommendations = [[] for _ in range(logic_counts)]
-        for restaurant_id, v in RESTAURANTS.items():
+        for restaurant_id, v in self.available_restaurants.items():
             if all(
                 [
                     (v["cuisine"] in self.user.primary_cuisines),
@@ -295,7 +302,7 @@ class UserRestaurantRecommendation:
 
         logic_counts = 3
         recommendations = [[] for _ in range(logic_counts)]
-        for restaurant_id, v in RESTAURANTS.items():
+        for restaurant_id, v in self.available_restaurants.items():
             if all(
                 [
                     (v["cuisine"] in self.user.primary_cuisines),
@@ -335,7 +342,7 @@ class UserRestaurantRecommendation:
         """
 
         recommendations = []
-        for restaurant_id, v in RESTAURANTS.items():
+        for restaurant_id, v in self.available_restaurants.items():
             recommendations.append(int(restaurant_id))
         return recommendations
 
@@ -356,8 +363,9 @@ class UserRestaurantRecommendation:
         return ordered_priorities
 
 
-user_recommendations = UserRestaurantRecommendation(
-    user_id=1
-)  # taking sample user with user_id=1
-restaurants_recommendation = user_recommendations.get_restaurants_recommendations()
+user = UsersOrderService(user_id=1).get_user_details()
+user_recommendations = UserRestaurantRecommendation()
+restaurants_recommendation = user_recommendations.get_restaurant_recommendations(
+    user_instance=user, available_restaurants=RESTAURANTS
+)
 print(restaurants_recommendation)
