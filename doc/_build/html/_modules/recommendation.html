@@ -42,7 +42,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../modules.html">restaurant-recommendation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">restaurants_recommendation_ak</a></li>
 </ul>
 
         </div>
@@ -70,108 +70,159 @@
            <div itemprop="articleBody">
              
   <h1>Source code for recommendation</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">mock_service</span> <span class="kn">import</span> <span class="n">ALL_ORDERS</span><span class="p">,</span> <span class="n">RESTAURANTS</span><span class="p">,</span> <span class="n">NEW_TOP_RATING_RESTAURANTS</span>
+<span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">cached_property</span>
+<span class="kn">from</span> <span class="nn">mock_service</span> <span class="kn">import</span> <span class="n">ALL_ORDERS</span><span class="p">,</span> <span class="n">RESTAURANTS</span><span class="p">,</span> <span class="n">NEW_TOP_RATING_RESTAURANTS</span>
 
 
-<div class="viewcode-block" id="UserRestaurantOrders"><a class="viewcode-back" href="../recommendation.html#recommendation.UserRestaurantOrders">[docs]</a><span class="k">class</span> <span class="nc">UserRestaurantOrders</span><span class="p">:</span>
+<div class="viewcode-block" id="CostTracking"><a class="viewcode-back" href="../recommendation.html#recommendation.CostTracking">[docs]</a><span class="k">class</span> <span class="nc">CostTracking</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cost_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">orders_count</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param cost_type: type of cost bracket cheapest to costly (1,5)</span>
+<span class="sd">        :param orders_count: count of orders</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">cost_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">no_of_orders</span> <span class="o">=</span> <span class="n">orders_count</span></div>
+
+
+<div class="viewcode-block" id="CuisineTracking"><a class="viewcode-back" href="../recommendation.html#recommendation.CuisineTracking">[docs]</a><span class="k">class</span> <span class="nc">CuisineTracking</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cuisine_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">orders_count</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param cuisine_type: type of Cuisine (SouthIndian, NorthIndian, Chinese, Continental)</span>
+<span class="sd">        :param orders_count: count of orders</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">cuisine_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">no_of_orders</span> <span class="o">=</span> <span class="n">orders_count</span></div>
+
+
+<div class="viewcode-block" id="User"><a class="viewcode-back" href="../recommendation.html#recommendation.User">[docs]</a><span class="k">class</span> <span class="nc">User</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cost_tracking</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">cuisine_tracking</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param cost_tracking: list of user&#39;s costs tracking</span>
+<span class="sd">        :param cuisine_tracking: list of user&#39;s cuisines tracking</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">costTracking</span> <span class="o">=</span> <span class="n">cost_tracking</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cuisineTracking</span> <span class="o">=</span> <span class="n">cuisine_tracking</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">primary_cuisines</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        user&#39;s primary cuisine based on no_of_orders</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_primary_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cuisineTracking</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">secondary_cuisines</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        user&#39;s secondary cuisines based on no_of_orders</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">cuisine</span><span class="o">.</span><span class="n">type</span>
+            <span class="k">for</span> <span class="n">cuisine</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cuisineTracking</span>
+            <span class="k">if</span> <span class="n">cuisine</span><span class="o">.</span><span class="n">type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">primary_cuisines</span>
+        <span class="p">]</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">primary_cost_brackets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        user&#39;s primary cost brackets based on no_of_orders</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_primary_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">costTracking</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">secondary_cost_brackets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        user&#39;s secondary cost brackets based on no_of_orders</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">cost_bracket</span><span class="o">.</span><span class="n">type</span>
+            <span class="k">for</span> <span class="n">cost_bracket</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">costTracking</span>
+            <span class="k">if</span> <span class="n">cost_bracket</span><span class="o">.</span><span class="n">type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">primary_cost_brackets</span>
+        <span class="p">]</span>
+
+<div class="viewcode-block" id="User.get_primary_type"><a class="viewcode-back" href="../recommendation.html#recommendation.User.get_primary_type">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_primary_type</span><span class="p">(</span><span class="n">records</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        return primary type based on count of orders</span>
+
+<span class="sd">        :param records: list of cuisines or cost bracket</span>
+<span class="sd">        :return: primary type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">primary</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">max_no_of_orders</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">no_of_orders</span> <span class="o">&gt;</span> <span class="n">max_no_of_orders</span><span class="p">:</span>
+                <span class="n">primary</span> <span class="o">=</span> <span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+                <span class="n">max_no_of_orders</span> <span class="o">=</span> <span class="n">records</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">no_of_orders</span>
+            <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">primary</span><span class="o">.</span><span class="n">type</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="UsersOrderService"><a class="viewcode-back" href="../recommendation.html#recommendation.UsersOrderService">[docs]</a><span class="k">class</span> <span class="nc">UsersOrderService</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_orders</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cuisine_tracking</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost_tracking</span> <span class="o">=</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="UserRestaurantOrders.get_user_orders"><a class="viewcode-back" href="../recommendation.html#recommendation.UserRestaurantOrders.get_user_orders">[docs]</a>    <span class="k">def</span> <span class="nf">get_user_orders</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<div class="viewcode-block" id="UsersOrderService.populate_user_orders"><a class="viewcode-back" href="../recommendation.html#recommendation.UsersOrderService.populate_user_orders">[docs]</a>    <span class="k">def</span> <span class="nf">populate_user_orders</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get all the user&#39;s order from all orders</span>
-<span class="sd">        :return: user&#39;s order list</span>
+<span class="sd">        populates user&#39;s orders from all orders</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">user_orders</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">ALL_ORDERS</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">val</span><span class="p">[</span><span class="s2">&quot;userId&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span><span class="p">:</span>
-                <span class="n">user_orders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">user_orders</span></div></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">user_orders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
 
-
-<div class="viewcode-block" id="UserCuisines"><a class="viewcode-back" href="../recommendation.html#recommendation.UserCuisines">[docs]</a><span class="k">class</span> <span class="nc">UserCuisines</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_orders</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">user_orders</span> <span class="o">=</span> <span class="n">user_orders</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">primary_cuisine</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">secondary_cuisine</span> <span class="o">=</span> <span class="kc">None</span>
-
-<div class="viewcode-block" id="UserCuisines.calculate_user_cuisines"><a class="viewcode-back" href="../recommendation.html#recommendation.UserCuisines.calculate_user_cuisines">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_user_cuisines</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="UsersOrderService.populate_user_cuisines"><a class="viewcode-back" href="../recommendation.html#recommendation.UsersOrderService.populate_user_cuisines">[docs]</a>    <span class="k">def</span> <span class="nf">populate_user_cuisines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        calculates the user primary and secondary cuisines based on</span>
-<span class="sd">        numbers of orders he placed</span>
+<span class="sd">        populates user&#39;s cuisines tracking from user&#39;s orders</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_orders</span><span class="p">:</span>
-            <span class="n">cuisine_count</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">cuisines</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_orders</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">cuisine_count</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                    <span class="n">cuisine_count</span><span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">cuisines</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">cuisines</span><span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">cuisine_count</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]:</span> <span class="mi">1</span><span class="p">})</span>
-            <span class="n">cuisines</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">cuisine_count</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">primary_cuisine</span> <span class="o">=</span> <span class="n">cuisines</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">secondary_cuisine</span> <span class="o">=</span> <span class="n">cuisines</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span></div>
+                    <span class="n">cuisines</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]:</span> <span class="mi">1</span><span class="p">})</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cuisine_tracking</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">CuisineTracking</span><span class="p">(</span><span class="n">cuisine_type</span><span class="o">=</span><span class="n">cuisine_type</span><span class="p">,</span> <span class="n">orders_count</span><span class="o">=</span><span class="n">orders_count</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">cuisine_type</span><span class="p">,</span> <span class="n">orders_count</span> <span class="ow">in</span> <span class="n">cuisines</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="UserCuisines.primary_cuisines"><a class="viewcode-back" href="../recommendation.html#recommendation.UserCuisines.primary_cuisines">[docs]</a>    <span class="k">def</span> <span class="nf">primary_cuisines</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<div class="viewcode-block" id="UsersOrderService.populate_user_cost_bracket"><a class="viewcode-back" href="../recommendation.html#recommendation.UsersOrderService.populate_user_cost_bracket">[docs]</a>    <span class="k">def</span> <span class="nf">populate_user_cost_bracket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :return: user&#39;s primary cuisine</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">primary_cuisine</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">calculate_user_cuisines</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">primary_cuisine</span></div>
-
-<div class="viewcode-block" id="UserCuisines.secondary_cuisines"><a class="viewcode-back" href="../recommendation.html#recommendation.UserCuisines.secondary_cuisines">[docs]</a>    <span class="k">def</span> <span class="nf">secondary_cuisines</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :return: user&#39;s secondary cuisines</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">secondary_cuisine</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">primary_cuisine</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">calculate_user_cuisines</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">secondary_cuisine</span></div></div>
-
-
-<div class="viewcode-block" id="UserCostBracket"><a class="viewcode-back" href="../recommendation.html#recommendation.UserCostBracket">[docs]</a><span class="k">class</span> <span class="nc">UserCostBracket</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_orders</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">user_orders</span> <span class="o">=</span> <span class="n">user_orders</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">primary_cost_bracket</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">secondary_cost_bracket</span> <span class="o">=</span> <span class="kc">None</span>
-
-<div class="viewcode-block" id="UserCostBracket.calculate_user_cost_brackets"><a class="viewcode-back" href="../recommendation.html#recommendation.UserCostBracket.calculate_user_cost_brackets">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_user_cost_brackets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        calculates the user primary and secondary costBracket based on</span>
-<span class="sd">        numbers of orders he placed</span>
+<span class="sd">        populates user&#39;s cost tracking from user&#39;s orders</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_orders</span><span class="p">:</span>
-            <span class="n">bracket_count</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">cost_bracket</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_orders</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">bracket_count</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                    <span class="n">bracket_count</span><span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">cost_bracket</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">cost_bracket</span><span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">bracket_count</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]:</span> <span class="mi">1</span><span class="p">})</span>
-            <span class="n">cost_brackets</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">bracket_count</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">primary_cost_bracket</span> <span class="o">=</span> <span class="n">cost_brackets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">secondary_cost_bracket</span> <span class="o">=</span> <span class="n">cost_brackets</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span></div>
+                    <span class="n">cost_bracket</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]:</span> <span class="mi">1</span><span class="p">})</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cost_tracking</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">CostTracking</span><span class="p">(</span><span class="n">cost_type</span><span class="o">=</span><span class="n">cost_type</span><span class="p">,</span> <span class="n">orders_count</span><span class="o">=</span><span class="n">orders_count</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">cost_type</span><span class="p">,</span> <span class="n">orders_count</span> <span class="ow">in</span> <span class="n">cost_bracket</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="UserCostBracket.primary_cost_brackets"><a class="viewcode-back" href="../recommendation.html#recommendation.UserCostBracket.primary_cost_brackets">[docs]</a>    <span class="k">def</span> <span class="nf">primary_cost_brackets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :return: user&#39;s primary cost bracket</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">primary_cost_bracket</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">calculate_user_cost_brackets</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">primary_cost_bracket</span></div>
-
-<div class="viewcode-block" id="UserCostBracket.secondary_cost_brackets"><a class="viewcode-back" href="../recommendation.html#recommendation.UserCostBracket.secondary_cost_brackets">[docs]</a>    <span class="k">def</span> <span class="nf">secondary_cost_brackets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :return: user&#39;s secondary cost bracket</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">secondary_cost_bracket</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">primary_cost_bracket</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">calculate_user_cost_brackets</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">secondary_cost_bracket</span></div></div>
+<div class="viewcode-block" id="UsersOrderService.get_user_details"><a class="viewcode-back" href="../recommendation.html#recommendation.UsersOrderService.get_user_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_user_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">populate_user_orders</span><span class="p">()</span><span class="o">.</span><span class="n">populate_user_cuisines</span><span class="p">()</span><span class="o">.</span><span class="n">populate_user_cost_bracket</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">User</span><span class="p">(</span>
+            <span class="n">cost_tracking</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cost_tracking</span><span class="p">,</span> <span class="n">cuisine_tracking</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cuisine_tracking</span>
+        <span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="UserRestaurantRecommendation"><a class="viewcode-back" href="../recommendation.html#recommendation.UserRestaurantRecommendation">[docs]</a><span class="k">class</span> <span class="nc">UserRestaurantRecommendation</span><span class="p">:</span>
@@ -184,9 +235,7 @@
     <span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">user_orders</span> <span class="o">=</span> <span class="n">UserRestaurantOrders</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span><span class="o">.</span><span class="n">get_user_orders</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">user_cuisines</span> <span class="o">=</span> <span class="n">UserCuisines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_orders</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">user_cost_brackets</span> <span class="o">=</span> <span class="n">UserCostBracket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_orders</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">UsersOrderService</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span><span class="o">.</span><span class="n">get_user_details</span><span class="p">()</span>
 
 <div class="viewcode-block" id="UserRestaurantRecommendation.get_restaurants_recommendations"><a class="viewcode-back" href="../recommendation.html#recommendation.UserRestaurantRecommendation.get_restaurants_recommendations">[docs]</a>    <span class="k">def</span> <span class="nf">get_restaurants_recommendations</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -196,38 +245,27 @@
 <span class="sd">        :return: list of restaurants</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">user_details</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;prim_cuisines&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_cuisines</span><span class="o">.</span><span class="n">primary_cuisines</span><span class="p">(),</span>
-            <span class="s2">&quot;secondary_cuisines&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_cuisines</span><span class="o">.</span><span class="n">secondary_cuisines</span><span class="p">(),</span>
-            <span class="s2">&quot;primary_cost_brackets&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_cost_brackets</span><span class="o">.</span><span class="n">primary_cost_brackets</span><span class="p">(),</span>
-            <span class="s2">&quot;secondary_cost_brackets&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_cost_brackets</span><span class="o">.</span><span class="n">secondary_cost_brackets</span><span class="p">(),</span>
-        <span class="p">}</span>
         <span class="n">recommendations_priorities</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="nb">getattr</span><span class="p">(</span><span class="n">UserRestaurantRecommendation</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">logic</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">user_details</span><span class="p">)</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">UserRestaurantRecommendation</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">logic</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)(</span><span class="bp">self</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">logic</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">LOGIC_TYPES</span>
         <span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ordered_unique_recommendation</span><span class="p">(</span><span class="n">recommendations_priorities</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="UserRestaurantRecommendation.get_featured_restaurants"><a class="viewcode-back" href="../recommendation.html#recommendation.UserRestaurantRecommendation.get_featured_restaurants">[docs]</a>    <span class="k">def</span> <span class="nf">get_featured_restaurants</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<div class="viewcode-block" id="UserRestaurantRecommendation.get_featured_restaurants"><a class="viewcode-back" href="../recommendation.html#recommendation.UserRestaurantRecommendation.get_featured_restaurants">[docs]</a>    <span class="k">def</span> <span class="nf">get_featured_restaurants</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get featured restaurants of primary cuisine and primary cost bracket.</span>
 <span class="sd">        If none, then all featured restaurants of primary cuisine, secondary cost</span>
 <span class="sd">        and secondary cuisine, primary cost</span>
 
-<span class="sd">        :param kwargs: user details viz. (primary/sec cuisines, costBrackets)</span>
 <span class="sd">        :return: list of restaurants</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">prim_cuisines</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;prim_cuisines&quot;</span><span class="p">]</span>
-        <span class="n">secondary_cuisines</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;secondary_cuisines&quot;</span><span class="p">]</span>
-        <span class="n">primary_cost_brackets</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;primary_cost_brackets&quot;</span><span class="p">]</span>
-        <span class="n">secondary_cost_brackets</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;secondary_cost_brackets&quot;</span><span class="p">]</span>
         <span class="n">recommendations</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">restaurant_id</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">RESTAURANTS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">all</span><span class="p">(</span>
                 <span class="p">[</span>
-                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">prim_cuisines</span><span class="p">),</span>
-                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">primary_cost_brackets</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">primary_cuisines</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">primary_cost_brackets</span><span class="p">),</span>
                     <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;isRecommended&quot;</span><span class="p">]),</span>
                     <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">restaurant_id</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">recommendations</span><span class="p">),</span>
                 <span class="p">]</span>
@@ -239,8 +277,8 @@
             <span class="k">for</span> <span class="n">restaurant_id</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">RESTAURANTS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="nb">all</span><span class="p">(</span>
                     <span class="p">[</span>
-                        <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">prim_cuisines</span><span class="p">),</span>
-                        <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">secondary_cost_brackets</span><span class="p">),</span>
+                        <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">primary_cuisines</span><span class="p">),</span>
+                        <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">secondary_cost_brackets</span><span class="p">),</span>
                         <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;isRecommended&quot;</span><span class="p">]),</span>
                         <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">restaurant_id</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">recommendations</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
                     <span class="p">]</span>
@@ -249,8 +287,8 @@
 
                 <span class="k">if</span> <span class="nb">all</span><span class="p">(</span>
                     <span class="p">[</span>
-                        <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">secondary_cuisines</span><span class="p">),</span>
-                        <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">primary_cost_brackets</span><span class="p">),</span>
+                        <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">secondary_cuisines</span><span class="p">),</span>
+                        <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">primary_cost_brackets</span><span class="p">),</span>
                         <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;isRecommended&quot;</span><span class="p">]),</span>
                         <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">restaurant_id</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">recommendations</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
                     <span class="p">]</span>
@@ -260,28 +298,23 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">recommendations</span></div>
 
-<div class="viewcode-block" id="UserRestaurantRecommendation.get_high_ratings_restaurants"><a class="viewcode-back" href="../recommendation.html#recommendation.UserRestaurantRecommendation.get_high_ratings_restaurants">[docs]</a>    <span class="k">def</span> <span class="nf">get_high_ratings_restaurants</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<div class="viewcode-block" id="UserRestaurantRecommendation.get_high_ratings_restaurants"><a class="viewcode-back" href="../recommendation.html#recommendation.UserRestaurantRecommendation.get_high_ratings_restaurants">[docs]</a>    <span class="k">def</span> <span class="nf">get_high_ratings_restaurants</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get restaurant using following logics in order:</span>
 <span class="sd">            - All restaurants of Primary cuisine, primary cost bracket with rating &gt;= 4</span>
 <span class="sd">            - All restaurants of Primary cuisine, secondary cost bracket with rating &gt;= 4.5</span>
 <span class="sd">            - All restaurants of secondary cuisine, primary cost bracket with rating &gt;= 4.5</span>
 
-<span class="sd">        :param kwargs: user details viz. (primary/sec cuisines, costBrackets)</span>
 <span class="sd">        :return: list of restaurants</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">prim_cuisines</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;prim_cuisines&quot;</span><span class="p">]</span>
-        <span class="n">secondary_cuisines</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;secondary_cuisines&quot;</span><span class="p">]</span>
-        <span class="n">primary_cost_brackets</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;primary_cost_brackets&quot;</span><span class="p">]</span>
-        <span class="n">secondary_cost_brackets</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;secondary_cost_brackets&quot;</span><span class="p">]</span>
         <span class="n">logic_counts</span> <span class="o">=</span> <span class="mi">3</span>
         <span class="n">recommendations</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">logic_counts</span><span class="p">)]</span>
         <span class="k">for</span> <span class="n">restaurant_id</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">RESTAURANTS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">all</span><span class="p">(</span>
                 <span class="p">[</span>
-                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">prim_cuisines</span><span class="p">),</span>
-                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">primary_cost_brackets</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">primary_cuisines</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">primary_cost_brackets</span><span class="p">),</span>
                     <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">),</span>
                     <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">restaurant_id</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">recommendations</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
                 <span class="p">]</span>
@@ -290,8 +323,8 @@
 
             <span class="k">if</span> <span class="nb">all</span><span class="p">(</span>
                 <span class="p">[</span>
-                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">prim_cuisines</span><span class="p">),</span>
-                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">secondary_cost_brackets</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">primary_cuisines</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">secondary_cost_brackets</span><span class="p">),</span>
                     <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">4.5</span><span class="p">),</span>
                     <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">restaurant_id</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">recommendations</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
                 <span class="p">]</span>
@@ -300,8 +333,8 @@
 
             <span class="k">if</span> <span class="nb">all</span><span class="p">(</span>
                 <span class="p">[</span>
-                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">secondary_cuisines</span><span class="p">),</span>
-                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">primary_cost_brackets</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">secondary_cuisines</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">primary_cost_brackets</span><span class="p">),</span>
                     <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">4.5</span><span class="p">),</span>
                     <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">restaurant_id</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">recommendations</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
                 <span class="p">]</span>
@@ -309,11 +342,10 @@
                 <span class="n">recommendations</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">restaurant_id</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ordered_unique_recommendation</span><span class="p">(</span><span class="n">recommendations</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="UserRestaurantRecommendation.get_new_created_restaurants"><a class="viewcode-back" href="../recommendation.html#recommendation.UserRestaurantRecommendation.get_new_created_restaurants">[docs]</a>    <span class="k">def</span> <span class="nf">get_new_created_restaurants</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<div class="viewcode-block" id="UserRestaurantRecommendation.get_new_created_restaurants"><a class="viewcode-back" href="../recommendation.html#recommendation.UserRestaurantRecommendation.get_new_created_restaurants">[docs]</a>    <span class="k">def</span> <span class="nf">get_new_created_restaurants</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get Top 4 newly created restaurants by rating</span>
 
-<span class="sd">        :param kwargs: user details viz. (primary/sec cuisines, costBrackets)</span>
 <span class="sd">        :return: list of restaurants</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -323,28 +355,23 @@
                 <span class="n">recommendations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">restaurant</span><span class="p">[</span><span class="s2">&quot;restaurantId&quot;</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">recommendations</span></div>
 
-<div class="viewcode-block" id="UserRestaurantRecommendation.get_low_rating_restaurants"><a class="viewcode-back" href="../recommendation.html#recommendation.UserRestaurantRecommendation.get_low_rating_restaurants">[docs]</a>    <span class="k">def</span> <span class="nf">get_low_rating_restaurants</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<div class="viewcode-block" id="UserRestaurantRecommendation.get_low_rating_restaurants"><a class="viewcode-back" href="../recommendation.html#recommendation.UserRestaurantRecommendation.get_low_rating_restaurants">[docs]</a>    <span class="k">def</span> <span class="nf">get_low_rating_restaurants</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get restaurant using following logics in order:</span>
 <span class="sd">            All restaurants of Primary cuisine, primary cost bracket with rating &lt; 4</span>
 <span class="sd">            All restaurants of Primary cuisine, secondary cost bracket with rating &lt; 4.5</span>
 <span class="sd">            All restaurants of secondary cuisine, primary cost bracket with rating &lt; 4.5</span>
 
-<span class="sd">        :param kwargs: user details viz. (primary/sec cuisines, costBrackets)</span>
 <span class="sd">        :return: list of restaurants</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">prim_cuisines</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;prim_cuisines&quot;</span><span class="p">]</span>
-        <span class="n">secondary_cuisines</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;secondary_cuisines&quot;</span><span class="p">]</span>
-        <span class="n">primary_cost_brackets</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;primary_cost_brackets&quot;</span><span class="p">]</span>
-        <span class="n">secondary_cost_brackets</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;secondary_cost_brackets&quot;</span><span class="p">]</span>
         <span class="n">logic_counts</span> <span class="o">=</span> <span class="mi">3</span>
         <span class="n">recommendations</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">logic_counts</span><span class="p">)]</span>
         <span class="k">for</span> <span class="n">restaurant_id</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">RESTAURANTS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">all</span><span class="p">(</span>
                 <span class="p">[</span>
-                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">prim_cuisines</span><span class="p">),</span>
-                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">primary_cost_brackets</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">primary_cuisines</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">primary_cost_brackets</span><span class="p">),</span>
                     <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">4.5</span><span class="p">),</span>
                     <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">restaurant_id</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">recommendations</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
                 <span class="p">]</span>
@@ -353,8 +380,8 @@
 
             <span class="k">if</span> <span class="nb">all</span><span class="p">(</span>
                 <span class="p">[</span>
-                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">prim_cuisines</span><span class="p">),</span>
-                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">secondary_cost_brackets</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">primary_cuisines</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">secondary_cost_brackets</span><span class="p">),</span>
                     <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">4.5</span><span class="p">),</span>
                     <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">restaurant_id</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">recommendations</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
                 <span class="p">]</span>
@@ -363,8 +390,8 @@
 
             <span class="k">if</span> <span class="nb">all</span><span class="p">(</span>
                 <span class="p">[</span>
-                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">secondary_cuisines</span><span class="p">),</span>
-                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">primary_cost_brackets</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;cuisine&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">secondary_cuisines</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;costBracket&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">primary_cost_brackets</span><span class="p">),</span>
                     <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">4.5</span><span class="p">),</span>
                     <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">restaurant_id</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">recommendations</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
                 <span class="p">]</span>
@@ -372,11 +399,10 @@
                 <span class="n">recommendations</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">restaurant_id</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ordered_unique_recommendation</span><span class="p">(</span><span class="n">recommendations</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="UserRestaurantRecommendation.get_all_restaurants"><a class="viewcode-back" href="../recommendation.html#recommendation.UserRestaurantRecommendation.get_all_restaurants">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_restaurants</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<div class="viewcode-block" id="UserRestaurantRecommendation.get_all_restaurants"><a class="viewcode-back" href="../recommendation.html#recommendation.UserRestaurantRecommendation.get_all_restaurants">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_restaurants</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get All restaurants of any cuisine, any cost bracket</span>
 
-<span class="sd">        :param kwargs: user details viz. (primary/sec cuisines, costBrackets)</span>
 <span class="sd">        :return: list of all restaurants</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 

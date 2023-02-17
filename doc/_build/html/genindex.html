@@ -42,7 +42,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">restaurant-recommendation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">restaurants_recommendation_ak</a></li>
 </ul>
 
         </div>
@@ -88,17 +88,17 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="recommendation.html#recommendation.UserCostBracket.calculate_user_cost_brackets">calculate_user_cost_brackets() (recommendation.UserCostBracket method)</a>
-</li>
-      <li><a href="recommendation.html#recommendation.UserCuisines.calculate_user_cuisines">calculate_user_cuisines() (recommendation.UserCuisines method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="mock.html#mock.Cuisines.CHINESE">CHINESE (mock.Cuisines attribute)</a>
 </li>
       <li><a href="mock.html#mock.Cuisines.CONTINENTAL">CONTINENTAL (mock.Cuisines attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="recommendation.html#recommendation.CostTracking">CostTracking (class in recommendation)</a>
+</li>
       <li><a href="mock.html#mock.Cuisines">Cuisines (class in mock)</a>
+</li>
+      <li><a href="recommendation.html#recommendation.CuisineTracking">CuisineTracking (class in recommendation)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -134,13 +134,15 @@
 </li>
       <li><a href="recommendation.html#recommendation.UserRestaurantRecommendation.get_ordered_unique_recommendation">get_ordered_unique_recommendation() (recommendation.UserRestaurantRecommendation static method)</a>
 </li>
+      <li><a href="recommendation.html#recommendation.User.get_primary_type">get_primary_type() (recommendation.User static method)</a>
+</li>
       <li><a href="mock.html#mock.MockData.get_random_date_range">get_random_date_range() (mock.MockData static method)</a>
 </li>
       <li><a href="recommendation.html#recommendation.UserRestaurantRecommendation.get_restaurants_recommendations">get_restaurants_recommendations() (recommendation.UserRestaurantRecommendation method)</a>
 </li>
       <li><a href="mock_service.html#mock_service.RestaurantsService.get_top_four_by_ratings">get_top_four_by_ratings() (mock_service.RestaurantsService method)</a>
 </li>
-      <li><a href="recommendation.html#recommendation.UserRestaurantOrders.get_user_orders">get_user_orders() (recommendation.UserRestaurantOrders method)</a>
+      <li><a href="recommendation.html#recommendation.UsersOrderService.get_user_details">get_user_details() (recommendation.UsersOrderService method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -203,6 +205,10 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mock.html#mock.Order">Order (class in mock)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="mock_service.html#mock_service.OrdersService">OrdersService (class in mock_service)</a>
 </li>
   </ul></td>
@@ -211,11 +217,17 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="recommendation.html#recommendation.UserCostBracket.primary_cost_brackets">primary_cost_brackets() (recommendation.UserCostBracket method)</a>
+      <li><a href="recommendation.html#recommendation.UsersOrderService.populate_user_cost_bracket">populate_user_cost_bracket() (recommendation.UsersOrderService method)</a>
+</li>
+      <li><a href="recommendation.html#recommendation.UsersOrderService.populate_user_cuisines">populate_user_cuisines() (recommendation.UsersOrderService method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="recommendation.html#recommendation.UserCuisines.primary_cuisines">primary_cuisines() (recommendation.UserCuisines method)</a>
+      <li><a href="recommendation.html#recommendation.UsersOrderService.populate_user_orders">populate_user_orders() (recommendation.UsersOrderService method)</a>
+</li>
+      <li><a href="recommendation.html#recommendation.User.primary_cost_brackets">primary_cost_brackets (recommendation.User property)</a>
+</li>
+      <li><a href="recommendation.html#recommendation.User.primary_cuisines">primary_cuisines (recommendation.User property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -232,6 +244,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mock.html#mock.Restaurant">Restaurant (class in mock)</a>
+</li>
       <li><a href="mock_service.html#mock_service.RestaurantsService">RestaurantsService (class in mock_service)</a>
 </li>
   </ul></td>
@@ -240,11 +254,11 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="recommendation.html#recommendation.UserCostBracket.secondary_cost_brackets">secondary_cost_brackets() (recommendation.UserCostBracket method)</a>
+      <li><a href="recommendation.html#recommendation.User.secondary_cost_brackets">secondary_cost_brackets (recommendation.User property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="recommendation.html#recommendation.UserCuisines.secondary_cuisines">secondary_cuisines() (recommendation.UserCuisines method)</a>
+      <li><a href="recommendation.html#recommendation.User.secondary_cuisines">secondary_cuisines (recommendation.User property)</a>
 </li>
       <li><a href="mock.html#mock.Cuisines.SOUTH_INDIAN">SOUTH_INDIAN (mock.Cuisines attribute)</a>
 </li>
@@ -254,15 +268,13 @@
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="recommendation.html#recommendation.UserCostBracket">UserCostBracket (class in recommendation)</a>
-</li>
-      <li><a href="recommendation.html#recommendation.UserCuisines">UserCuisines (class in recommendation)</a>
+      <li><a href="recommendation.html#recommendation.User">User (class in recommendation)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="recommendation.html#recommendation.UserRestaurantOrders">UserRestaurantOrders (class in recommendation)</a>
-</li>
       <li><a href="recommendation.html#recommendation.UserRestaurantRecommendation">UserRestaurantRecommendation (class in recommendation)</a>
+</li>
+      <li><a href="recommendation.html#recommendation.UsersOrderService">UsersOrderService (class in recommendation)</a>
 </li>
   </ul></td>
 </tr></table>

@@ -42,7 +42,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../modules.html">restaurant-recommendation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">restaurants_recommendation_ak</a></li>
 </ul>
 
         </div>
@@ -84,6 +84,33 @@
     <span class="n">CONTINENTAL</span> <span class="o">=</span> <span class="s2">&quot;Continental&quot;</span></div>
 
 
+<div class="viewcode-block" id="Restaurant"><a class="viewcode-back" href="../mock.html#mock.Restaurant">[docs]</a><span class="k">class</span> <span class="nc">Restaurant</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">restaurantId</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">cuisine</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">costBracket</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">rating</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">isRecommended</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">onBoardedTime</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">restaurantId</span> <span class="o">=</span> <span class="n">restaurantId</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cuisine</span> <span class="o">=</span> <span class="n">cuisine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">costBracket</span> <span class="o">=</span> <span class="n">costBracket</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rating</span> <span class="o">=</span> <span class="n">rating</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isRecommended</span> <span class="o">=</span> <span class="n">isRecommended</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">onBoardedTime</span> <span class="o">=</span> <span class="n">onBoardedTime</span></div>
+
+
+<div class="viewcode-block" id="Order"><a class="viewcode-back" href="../mock.html#mock.Order">[docs]</a><span class="k">class</span> <span class="nc">Order</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orderId</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">userId</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">restaurant</span><span class="p">:</span> <span class="n">Restaurant</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orderId</span> <span class="o">=</span> <span class="n">orderId</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">userId</span> <span class="o">=</span> <span class="n">userId</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">restaurantId</span> <span class="o">=</span> <span class="n">restaurant</span><span class="o">.</span><span class="n">restaurantId</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cuisine</span> <span class="o">=</span> <span class="n">restaurant</span><span class="o">.</span><span class="n">cuisine</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">costBracket</span> <span class="o">=</span> <span class="n">restaurant</span><span class="o">.</span><span class="n">costBracket</span></div>
+
+
 <div class="viewcode-block" id="MockData"><a class="viewcode-back" href="../mock.html#mock.MockData">[docs]</a><span class="k">class</span> <span class="nc">MockData</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rest</span> <span class="o">=</span> <span class="p">{}</span>
@@ -112,18 +139,15 @@
 
         <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">101</span><span class="p">):</span>
             <span class="n">rating</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">uniform</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">rest</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="p">{</span>
-                    <span class="n">index</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s2">&quot;restaurantId&quot;</span><span class="p">:</span> <span class="n">index</span><span class="p">,</span>
-                        <span class="s2">&quot;cuisine&quot;</span><span class="p">:</span> <span class="n">choice</span><span class="p">([</span><span class="n">cuisine</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">cuisine</span> <span class="ow">in</span> <span class="n">Cuisines</span><span class="p">]),</span>
-                        <span class="s2">&quot;costBracket&quot;</span><span class="p">:</span> <span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
-                        <span class="s2">&quot;rating&quot;</span><span class="p">:</span> <span class="n">rating</span><span class="p">,</span>
-                        <span class="s2">&quot;isRecommended&quot;</span><span class="p">:</span> <span class="n">choice</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span> <span class="k">if</span> <span class="n">rating</span> <span class="o">&gt;</span> <span class="mi">4</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
-                        <span class="s2">&quot;onBoardedTime&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_random_date_range</span><span class="p">(),</span>
-                    <span class="p">}</span>
-                <span class="p">}</span>
+            <span class="n">restaurant</span> <span class="o">=</span> <span class="n">Restaurant</span><span class="p">(</span>
+                <span class="n">restaurantId</span><span class="o">=</span><span class="n">index</span><span class="p">,</span>
+                <span class="n">cuisine</span><span class="o">=</span><span class="n">choice</span><span class="p">([</span><span class="n">cuisine</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">cuisine</span> <span class="ow">in</span> <span class="n">Cuisines</span><span class="p">]),</span>
+                <span class="n">costBracket</span><span class="o">=</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+                <span class="n">rating</span><span class="o">=</span><span class="n">rating</span><span class="p">,</span>
+                <span class="n">isRecommended</span><span class="o">=</span><span class="n">choice</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span> <span class="k">if</span> <span class="n">rating</span> <span class="o">&gt;</span> <span class="mi">4</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="n">onBoardedTime</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_random_date_range</span><span class="p">(),</span>
             <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rest</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">index</span><span class="p">:</span> <span class="n">restaurant</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">})</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;restaurants.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rest</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
@@ -137,22 +161,13 @@
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;restaurants.json&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">rest</span><span class="p">:</span>
             <span class="n">restaurants</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">rest</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50001</span><span class="p">):</span>
-            <span class="n">restaurant_id</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="p">{</span>
-                    <span class="n">order</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s2">&quot;orderId&quot;</span><span class="p">:</span> <span class="n">order</span><span class="p">,</span>
-                        <span class="s2">&quot;userId&quot;</span><span class="p">:</span> <span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">500</span><span class="p">),</span>
-                        <span class="s2">&quot;restaurantId&quot;</span><span class="p">:</span> <span class="n">restaurant_id</span><span class="p">,</span>
-                        <span class="s2">&quot;cuisine&quot;</span><span class="p">:</span> <span class="n">restaurants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">restaurant_id</span><span class="p">),</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                            <span class="s2">&quot;cuisine&quot;</span>
-                        <span class="p">),</span>
-                        <span class="s2">&quot;costBracket&quot;</span><span class="p">:</span> <span class="n">restaurants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">restaurant_id</span><span class="p">),</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                            <span class="s2">&quot;costBracket&quot;</span>
-                        <span class="p">),</span>
-                    <span class="p">}</span>
-                <span class="p">}</span>
+            <span class="n">restaurant_instance</span> <span class="o">=</span> <span class="n">Restaurant</span><span class="p">(</span>
+                <span class="o">**</span><span class="n">restaurants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)),</span> <span class="p">{})</span>
             <span class="p">)</span>
+            <span class="n">orderInstance</span> <span class="o">=</span> <span class="n">Order</span><span class="p">(</span>
+                <span class="n">orderId</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="n">userId</span><span class="o">=</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">500</span><span class="p">),</span> <span class="n">restaurant</span><span class="o">=</span><span class="n">restaurant_instance</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">order</span><span class="p">:</span> <span class="n">orderInstance</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">})</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;orders.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div></div>
 

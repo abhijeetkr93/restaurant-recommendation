@@ -1,5 +1,5 @@
-restaurant-recommendation
-=========================
+restaurants_recommendation_ak
+=============================
 
 .. toctree::
    :maxdepth: 4
