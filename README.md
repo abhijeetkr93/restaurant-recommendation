@@ -1,4 +1,4 @@
-# Restaurants recommendations Submission
+# Restaurants recommendations
 
 ## Solution
 
