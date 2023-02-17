@@ -12,6 +12,33 @@ class Cuisines(Enum):
     CONTINENTAL = "Continental"
 
 
+class Restaurant:
+    def __init__(
+        self,
+        restaurantId: int,
+        cuisine: str,
+        costBracket: int,
+        rating: float,
+        isRecommended: bool,
+        onBoardedTime: str,
+    ) -> None:
+        self.restaurantId = restaurantId
+        self.cuisine = cuisine
+        self.costBracket = costBracket
+        self.rating = rating
+        self.isRecommended = isRecommended
+        self.onBoardedTime = onBoardedTime
+
+
+class Order:
+    def __init__(self, orderId: int, userId: int, restaurant: Restaurant) -> None:
+        self.orderId = orderId
+        self.userId = userId
+        self.restaurantId = restaurant.restaurantId
+        self.cuisine = restaurant.cuisine
+        self.costBracket = restaurant.costBracket
+
+
 class MockData:
     def __init__(self) -> None:
         self.rest = {}
@@ -40,18 +67,15 @@ class MockData:
 
         for index in range(1, 101):
             rating = round(uniform(1, 5), 2)
-            self.rest.update(
-                {
-                    index: {
-                        "restaurantId": index,
-                        "cuisine": choice([cuisine.value for cuisine in Cuisines]),
-                        "costBracket": randint(1, 5),
-                        "rating": rating,
-                        "isRecommended": choice([True, False]) if rating > 4 else False,
-                        "onBoardedTime": self.get_random_date_range(),
-                    }
-                }
+            restaurant = Restaurant(
+                restaurantId=index,
+                cuisine=choice([cuisine.value for cuisine in Cuisines]),
+                costBracket=randint(1, 5),
+                rating=rating,
+                isRecommended=choice([True, False]) if rating > 4 else False,
+                onBoardedTime=self.get_random_date_range(),
             )
+            self.rest.update({index: restaurant.__dict__})
         with open("restaurants.json", "w") as f:
             json.dump(self.rest, f, indent=2)
         return self
@@ -65,22 +89,13 @@ class MockData:
         with open("restaurants.json") as rest:
             restaurants = json.load(rest)
         for order in range(1, 50001):
-            restaurant_id = randint(1, 100)
-            self.orders.update(
-                {
-                    order: {
-                        "orderId": order,
-                        "userId": randint(1, 500),
-                        "restaurantId": restaurant_id,
-                        "cuisine": restaurants.get(str(restaurant_id), {}).get(
-                            "cuisine"
-                        ),
-                        "costBracket": restaurants.get(str(restaurant_id), {}).get(
-                            "costBracket"
-                        ),
-                    }
-                }
+            restaurant_instance = Restaurant(
+                **restaurants.get(str(randint(1, 100)), {})
             )
+            orderInstance = Order(
+                orderId=order, userId=randint(1, 500), restaurant=restaurant_instance
+            )
+            self.orders.update({order: orderInstance.__dict__})
         with open("orders.json", "w") as f:
             json.dump(self.orders, f, indent=2)
 

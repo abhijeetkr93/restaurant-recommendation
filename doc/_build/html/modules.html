@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>restaurant-recommendation &mdash; Restaurants Recommendation 0.0.1 documentation</title>
+  <title>restaurants_recommendation_ak &mdash; Restaurants Recommendation 0.0.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -45,7 +45,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">restaurant-recommendation</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">restaurants_recommendation_ak</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mock.html">mock module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mock_service.html">mock_service module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="recommendation.html">recommendation module</a></li>
@@ -67,7 +67,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">restaurant-recommendation</li>
+      <li class="breadcrumb-item active">restaurants_recommendation_ak</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -77,8 +77,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="restaurant-recommendation">
-<h1>restaurant-recommendation<a class="headerlink" href="#restaurant-recommendation" title="Permalink to this heading"></a></h1>
+  <section id="restaurants-recommendation-ak">
+<h1>restaurants_recommendation_ak<a class="headerlink" href="#restaurants-recommendation-ak" title="Permalink to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="mock.html">mock module</a><ul>
@@ -95,6 +95,8 @@
 <li class="toctree-l3"><a class="reference internal" href="mock.html#mock.MockData.mock_restaurants_in_json"><code class="docutils literal notranslate"><span class="pre">MockData.mock_restaurants_in_json()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="mock.html#mock.Order"><code class="docutils literal notranslate"><span class="pre">Order</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="mock.html#mock.Restaurant"><code class="docutils literal notranslate"><span class="pre">Restaurant</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mock_service.html">mock_service module</a><ul>
@@ -111,20 +113,14 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="recommendation.html">recommendation module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="recommendation.html#recommendation.UserCostBracket"><code class="docutils literal notranslate"><span class="pre">UserCostBracket</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="recommendation.html#recommendation.UserCostBracket.calculate_user_cost_brackets"><code class="docutils literal notranslate"><span class="pre">UserCostBracket.calculate_user_cost_brackets()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="recommendation.html#recommendation.UserCostBracket.primary_cost_brackets"><code class="docutils literal notranslate"><span class="pre">UserCostBracket.primary_cost_brackets()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="recommendation.html#recommendation.UserCostBracket.secondary_cost_brackets"><code class="docutils literal notranslate"><span class="pre">UserCostBracket.secondary_cost_brackets()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="recommendation.html#recommendation.UserCuisines"><code class="docutils literal notranslate"><span class="pre">UserCuisines</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="recommendation.html#recommendation.UserCuisines.calculate_user_cuisines"><code class="docutils literal notranslate"><span class="pre">UserCuisines.calculate_user_cuisines()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="recommendation.html#recommendation.UserCuisines.primary_cuisines"><code class="docutils literal notranslate"><span class="pre">UserCuisines.primary_cuisines()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="recommendation.html#recommendation.UserCuisines.secondary_cuisines"><code class="docutils literal notranslate"><span class="pre">UserCuisines.secondary_cuisines()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="recommendation.html#recommendation.UserRestaurantOrders"><code class="docutils literal notranslate"><span class="pre">UserRestaurantOrders</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="recommendation.html#recommendation.UserRestaurantOrders.get_user_orders"><code class="docutils literal notranslate"><span class="pre">UserRestaurantOrders.get_user_orders()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="recommendation.html#recommendation.CostTracking"><code class="docutils literal notranslate"><span class="pre">CostTracking</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="recommendation.html#recommendation.CuisineTracking"><code class="docutils literal notranslate"><span class="pre">CuisineTracking</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="recommendation.html#recommendation.User"><code class="docutils literal notranslate"><span class="pre">User</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="recommendation.html#recommendation.User.get_primary_type"><code class="docutils literal notranslate"><span class="pre">User.get_primary_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="recommendation.html#recommendation.User.primary_cost_brackets"><code class="docutils literal notranslate"><span class="pre">User.primary_cost_brackets</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="recommendation.html#recommendation.User.primary_cuisines"><code class="docutils literal notranslate"><span class="pre">User.primary_cuisines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="recommendation.html#recommendation.User.secondary_cost_brackets"><code class="docutils literal notranslate"><span class="pre">User.secondary_cost_brackets</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="recommendation.html#recommendation.User.secondary_cuisines"><code class="docutils literal notranslate"><span class="pre">User.secondary_cuisines</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="recommendation.html#recommendation.UserRestaurantRecommendation"><code class="docutils literal notranslate"><span class="pre">UserRestaurantRecommendation</span></code></a><ul>
@@ -136,6 +132,13 @@
 <li class="toctree-l3"><a class="reference internal" href="recommendation.html#recommendation.UserRestaurantRecommendation.get_new_created_restaurants"><code class="docutils literal notranslate"><span class="pre">UserRestaurantRecommendation.get_new_created_restaurants()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="recommendation.html#recommendation.UserRestaurantRecommendation.get_ordered_unique_recommendation"><code class="docutils literal notranslate"><span class="pre">UserRestaurantRecommendation.get_ordered_unique_recommendation()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="recommendation.html#recommendation.UserRestaurantRecommendation.get_restaurants_recommendations"><code class="docutils literal notranslate"><span class="pre">UserRestaurantRecommendation.get_restaurants_recommendations()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="recommendation.html#recommendation.UsersOrderService"><code class="docutils literal notranslate"><span class="pre">UsersOrderService</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="recommendation.html#recommendation.UsersOrderService.get_user_details"><code class="docutils literal notranslate"><span class="pre">UsersOrderService.get_user_details()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="recommendation.html#recommendation.UsersOrderService.populate_user_cost_bracket"><code class="docutils literal notranslate"><span class="pre">UsersOrderService.populate_user_cost_bracket()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="recommendation.html#recommendation.UsersOrderService.populate_user_cuisines"><code class="docutils literal notranslate"><span class="pre">UsersOrderService.populate_user_cuisines()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="recommendation.html#recommendation.UsersOrderService.populate_user_orders"><code class="docutils literal notranslate"><span class="pre">UsersOrderService.populate_user_orders()</span></code></a></li>
 </ul>
 </li>
 </ul>
